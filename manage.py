@@ -20,7 +20,14 @@ def handle(args):
         case "start":
             uvicorn.run("manage:app", host=HOST, port=PORT, reload=DEBUG)
 
+        case "up":
+            Settings.set_state("app", "status", True)
+
+        case "down":
+            Settings.set_state("app", "status", False)
+
         case _:
             print("No command provided exiting...")
 
-handle(sys.argv)
+if __name__ == "__main__":
+    handle(sys.argv)
