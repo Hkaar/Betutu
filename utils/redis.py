@@ -2,9 +2,11 @@ from redis import asyncio as aioredis
 
 from utils.config import Settings
 
-Settings.load_env()
+HOST = Settings.get_env("REDIS_HOST")
+PORT = Settings.get_env("REDIS_PORT")
+DATABASE = Settings.get_env("REDIS_DATABASE")
 
-REDIS_URL = Settings.get_env("REDIS_URL")
+REDIS_URL = f"redis://{HOST}:{PORT}/{DATABASE}"
 
 class RedisManager:
    redis = None

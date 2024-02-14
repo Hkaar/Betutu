@@ -18,7 +18,7 @@ app = FastAPI(
 
 app.add_middleware(HTTPIntercept)
 
-app.mount("/public", StaticFiles(directory="public"), name="src")
+app.mount("/src", StaticFiles(directory="public"), name="src")
 
 db_manager = DBManager(engine)
 
@@ -31,3 +31,7 @@ async def init():
 async def shutdown():
     await db_manager.shutdown()
     await RedisManager.disconnect()
+
+@app.get("/")
+def home():
+    return "hello"

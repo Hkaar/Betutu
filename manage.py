@@ -14,7 +14,7 @@ def handle(args):
         print("No command provided exiting...")
         return None
     
-    cmd = sys.argv[1]
+    cmd = args[1]
 
     match (cmd):
         case "start":
