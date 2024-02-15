@@ -16,6 +16,11 @@ class Settings:
             
             return False
         
+        elif type in (list, tuple, set):
+            value = os.getenv(key)
+            
+            return type(map(str.strip, json.loads(value)))
+        
         elif type:
             try:
                 return type(os.getenv(key))
