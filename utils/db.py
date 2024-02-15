@@ -1,4 +1,4 @@
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.ext.asyncio import AsyncSession, AsyncEngine, create_async_engine
 from sqlalchemy.ext.declarative import declarative_base
 
 from utils.config import Settings
@@ -19,30 +19,27 @@ if CONNECTION == "sqlite":
 else:
     db_url = f"{CONNECTION}+{CONNECTOR}://{USERNAME}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}"
 
-# Create an async engine
-engine = create_async_engine(db_url)
-
 # Create a base class for declarative models
 Base = declarative_base()
 
 class DBManager:
-    def __init__(self, engine):
-        self.engine = engine
+    engine: AsyncEngine | None = None
 
-    async def create_tables(self):
-        # Create tables based on declarative models
-        async with self.engine.begin() as conn:
+    @classmethod
+    async def create_tables(cls):
+        async with cls.engine.begin() as conn:
             await conn.run_sync(Base.metadata.create_all)
 
-    async def init(self):
-        # Initialize the database, create tables, etc.
-        await self.create_tables()
+    @classmethod
+    async def init(cls):
+        cls.engine = create_async_engine(db_url)
+        
+        await cls.create_tables()
 
-    async def shutdown(self):
-        # Provide an async session for database operations
-        await self.engine.dispose()
+    @classmethod
+    async def shutdown(cls):
+        await cls.engine.dispose()
 
 async def get_db():
-    # Provide an async session for database operations
-    async with AsyncSession(engine) as session:
-        yield session
+    async with AsyncSession(DBManager.engine) as session:
+        return session
