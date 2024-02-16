@@ -14,7 +14,7 @@ class SessionAuth:
         
         async with await get_db() as db:
             await db.execute(delete(SessionModel).where(
-                SessionModel.created < expire
+                SessionModel.created <= expire
             ))
 
             await db.commit()

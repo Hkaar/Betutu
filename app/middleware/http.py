@@ -1,7 +1,6 @@
 from typing import Any
 
 from fastapi import Request, status
-from fastapi.responses import FileResponse
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.base import BaseHTTPMiddleware
 

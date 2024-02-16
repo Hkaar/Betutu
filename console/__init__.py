@@ -32,7 +32,6 @@ class Console:
         cls._commands[name] = handler
 
     @classmethod
-    @cache
     def autoimport(cls):
         path = __path__
 
