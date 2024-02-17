@@ -101,6 +101,15 @@ h4, h5, h6 {
     color: black;
 }
 
+/* ----- User Form Styles -----*/
+#userForm {
+    height: 100vh;
+}
+
+#userForm .inner {
+    max-width: 500px;
+}
+
 /*----- Media Queries -----*/
 @media screen and (min-width: 992px) {
     #hero article, #about article {
