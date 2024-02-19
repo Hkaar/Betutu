@@ -253,6 +253,36 @@ h6 {
   border-bottom: 1px solid black;
 }
 
+/* ----- Menu Styles ----- */
+.item-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  padding: 12px;
+  aspect-ratio: 5 / 5;
+  border-radius: 5px;
+  gap: 12px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  transition: all .4s;
+}
+
+.item-card:hover {
+  transform: scale(1.005);
+  cursor: pointer;
+}
+
+.item-card:active {
+  background-color: lightgray;
+  transform: scale(0.95);
+}
+
+.item-card img {
+  aspect-ratio: 4 / 3;
+  display: block;
+  max-width: 100%;
+}
+
 /*----- Media Queries -----*/
 @media screen and (min-width: 992px) {
   #hero article,
