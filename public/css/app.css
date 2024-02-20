@@ -56,8 +56,12 @@ h6 {
 
 /* ----- Nav Bar Styles ----- */
 .navbar {
-  background-color: var(--transparent-light);
-  color: inherit;
+  background-color: var(--bs-dark);
+  color: var(--bs-light) !important;
+}
+
+.navbar * {
+  color: inherit !important;
 }
 
 .navbar-toggler {
