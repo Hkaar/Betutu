@@ -1,7 +1,8 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
+from fastapi.responses import FileResponse
 
 webRouter = APIRouter()
 
 @webRouter.get("/")
 def home():
-    return "My landing page"
+    return FileResponse("public/views/index.html")

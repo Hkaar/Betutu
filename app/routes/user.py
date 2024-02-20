@@ -65,7 +65,7 @@ async def register(request: Request, username: str = Form(None), password: str =
     
     return RedirectResponse(url="/error/401", status_code=status.HTTP_303_SEE_OTHER)
 
-@userRouter.post("/sign-out")
+@userRouter.post("/sign-out", dependencies=[Depends(SessionAuth.validate_session)])
 async def sign_out(request: Request):
     token = request.cookies.get("sessionToken")
 

@@ -3,7 +3,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from app.middleware.http import HTTPIntercept
-from app.routes import userRouter, webRouter
+from app.routes import userRouter, webRouter, orderRouter, menuRouter
 
 from utils.config import Settings
 from utils.db import DBManager
@@ -19,10 +19,12 @@ app = FastAPI(
 
 app.add_middleware(HTTPIntercept)
 
-app.mount("/src", StaticFiles(directory="public"), name="src")
+app.mount("/public", StaticFiles(directory="public"), name="public")
 
 app.include_router(userRouter)
 app.include_router(webRouter)
+app.include_router(orderRouter)
+app.include_router(menuRouter)
 
 templates = Jinja2Templates("public/views")
 
@@ -48,4 +50,15 @@ def error_handle(code: int, request: Request):
         
             return templates.TemplateResponse(
                 "error.html", context=context, status_code=status.HTTP_401_UNAUTHORIZED
+            )
+        
+        case 408:
+            context = {
+                "request": request,
+                "title": "408 | Request Timeout",
+                "msg": "Looks like something went wrong! Try again in a few moments!"
+            }
+
+            return templates.TemplateResponse(
+                "error.html", context=context, status_code=status.HTTP_408_REQUEST_TIMEOUT
             )
