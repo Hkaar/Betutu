@@ -36,7 +36,9 @@ class UserController:
                 (UserModel.username == name)
             ))
 
-            valid = argon2.verify(password, stored_password.scalar())
+            hashed = stored_password.scalar()
+
+            valid = argon2.verify(password, hashed)
 
             if valid:
                 return True
