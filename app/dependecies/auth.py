@@ -23,11 +23,10 @@ class SessionAuth:
         await SessionAuth.clear_sessions()
 
         token = request.cookies.get("sessionToken", "")
-        user_agent = request.headers.get("user-agent", "")
 
         async with await get_db() as db:
             exist = await db.execute(select(SessionModel).where(
-                (SessionModel.token == token) & (SessionModel.user_agent == user_agent) 
+                (SessionModel.token == token)
             ))
 
             if exist.scalar():

@@ -41,7 +41,7 @@ async def sign_in(request: Request, username: str = Form(None), password: str = 
 
         return response
     
-    return Response(content="Invalid credentials", status_code=status.HTTP_401_UNAUTHORIZED)
+    return RedirectResponse(url="/error/401", status_code=status.HTTP_303_SEE_OTHER)
 
 @userRouter.post("/register")
 async def register(request: Request, username: str = Form(None), password: str = Form(None)):
@@ -63,7 +63,7 @@ async def register(request: Request, username: str = Form(None), password: str =
 
         return response
     
-    return Response(content="Invalid credentials", status_code=status.HTTP_401_UNAUTHORIZED)
+    return RedirectResponse(url="/error/401", status_code=status.HTTP_303_SEE_OTHER)
 
 @userRouter.post("/sign-out")
 async def sign_out(request: Request):
@@ -71,7 +71,7 @@ async def sign_out(request: Request):
 
     await SessionController.delete(token)
 
-    response = Response("Signed out successfully!")
+    response = RedirectResponse(url="/user/sign-in", status_code=status.HTTP_303_SEE_OTHER)
     response.delete_cookie("sessionToken")
     
     return response
