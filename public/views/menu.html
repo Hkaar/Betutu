@@ -17,7 +17,7 @@
       <section class="d-flex justify-content-between mb-3">
         <h3>Menu</h3>
 
-        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#cartWindow">
+        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#itemInfo">
           <i class="fa-solid fa-cart-shopping"></i>
         </button>
       </section>
@@ -70,7 +70,33 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          ...
+          <table class="table rounded">
+            <thead>
+              <th scope="col">Item</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Total</th>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>Ayam Geprek</td>
+                <td>2</td>
+                <td>RP. 24.000</td>
+              </tr>
+
+              <tr>
+                <td>Ayam Geprek</td>
+                <td>2</td>
+                <td>RP. 24.000</td>
+              </tr>
+
+              <tr>
+                <td class="bg-dark text-light">Total Price</td>
+                <td class="bg-dark text-light">4</td>
+                <td class="bg-dark text-light">Rp. 48.000</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -84,15 +110,37 @@
     <div class="modal-dialog modal-lg modal-fullscreen-sm-down">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="itemWinTitle">My Order List</h1>
+          <h1 class="modal-title fs-5" id="itemWinTitle">Ayam Geprek</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        
         <div class="modal-body">
-          ...
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-success">Purchase</button>
+          <div class="row">
+            <div class="col-12 col-lg-6">
+              <img src="/public/assets/imgs/placeholder-1.jpg" alt="" class="img-fluid">
+            </div>
+
+            <div class="col-12 col-lg-6 mt-3">
+              <h3 class="mb-3">Ayam Geprek</h3>
+              <h6 class="mb-3">Rp. 12.000</h6>
+
+              <form action="" method="post">
+                <div class="mb-3">
+                  <label for="exampleInputPassword1" class="form-label">Amount</label>
+                  <input type="number" placeholder="Enter the amount here" class="form-control" id="exampleInputPassword1">
+                </div>
+
+                <p class="mb-3">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum nesciunt alias expedita, iste magnam provident autem velit amet sapiente cum maiores harum earum magni iure. Cum aut eligendi autem provident.
+                </p>
+                
+                <div class="d-flex justify-content-end">
+                  <button type="button" class="btn btn-danger me-1" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-success">Add to cart</button>
+                </div>
+              </form>
+            </div>
+          </div>  
         </div>
       </div>
     </div>
