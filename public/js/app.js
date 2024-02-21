@@ -23,9 +23,12 @@ function displayOrderItems() {
         method: "GET",
         url: "/order/orders"
     })
-    .then(response => (
-        console.log(response)
-    ))
+    .then(response => {
+        popup.innerHTML = response.data;
+
+        const modal = new bootstrap.Modal(popup);
+        modal.show()
+    })
     .catch(error => (
         console.log(error)
     ))
@@ -46,5 +49,9 @@ $(document).ready(()=> {
 
     $(document).on("click", ".item-card", (event) => {
         displayItem(event.target.getAttribute("data-item"))
+    })
+
+    $(document).on("click", "#cartToggle", (event) => {
+        displayOrderItems()
     })
 })
