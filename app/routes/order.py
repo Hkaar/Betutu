@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, Request, status, Form
-from fastapi.responses import FileResponse, RedirectResponse
+from fastapi.responses import RedirectResponse
 
 from app.controllers.order import OrderController
 from app.controllers.menu import MenuController
@@ -29,22 +29,22 @@ async def new_order(request: Request):
 async def get_menu_item(request: Request, item: str):
     return await MenuController.get_menu_popup(request, item)
 
-@orderRouter.get("/all/{type}")
-async def get_all_orders(request: Request, type: str = None):
-    match (type):
-        case "items":
-            return await OrderController.all_items(request)
-        
-        case _:
-            return await OrderController.all_orders(request)
+@orderRouter.get("/orders")
+async def get_order_items(request: Request):
+    return await OrderController.all_items(request)
+
+@orderRouter.get("/all")
+async def get_all_orders(request: Request):
+    return await OrderController.all_orders(request)
         
 @orderRouter.get("/total")
 async def total_price(request: Request):
     return await OrderController.total_price(request)
 
 @orderRouter.post("/add")
-async def fetch_orders():
-    return await OrderController.get_item_price("Ayam Geprek")
+async def add_order_item(request: Request, item: str = Form(None), amount: int = Form(None)):
+    await OrderController.add_item(request, item, amount)
+    return False
 
 @orderRouter.put("/update")
 async def update_order():
@@ -53,3 +53,7 @@ async def update_order():
 @orderRouter.delete("/delete")
 async def delete_order():
     pass
+
+@orderRouter.delete("/delete/item")
+async def delete_order_item(request: Request, id: int):
+    await OrderController.delete_item(request, id)

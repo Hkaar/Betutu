@@ -1,14 +1,14 @@
 import string
 
 from fastapi import Request
-from fastapi.responses import JSONResponse, HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 
 from sqlalchemy import select, delete
 from database.models.items import ItemModel
 from utils.db import get_db
 
-templates = Jinja2Templates("public/views")
+views = Jinja2Templates("public/views")
+templates = Jinja2Templates("public/templates")
 
 class MenuController:
     @staticmethod
@@ -24,7 +24,7 @@ class MenuController:
                 "items": items
             }
 
-            return templates.TemplateResponse("menu.html", context=context)
+            return views.TemplateResponse("menu.html", context=context)
 
     @staticmethod
     async def get_menu_popup(request: Request, item: str):
@@ -32,22 +32,11 @@ class MenuController:
             items_query = await db.execute(select(ItemModel).where(ItemModel.name == item))
             item = items_query.scalar()
 
-            html = f"""
-                <div class="modal-dialog modal-lg modal-fullscreen-sm-down">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="itemWinTitle">Order an item</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            {item.name}
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-success">Purchase</button>
-                        </div>
-                    </div>
-                </div>
-            """
+            context = {
+                "request": request,
+                "title": string.capwords(item.name),
+                "price": item.price,
+                "desc": "Just no"
+            }
 
-            return HTMLResponse(content=html)
+            return templates.TemplateResponse("menu-item.html", context=context)
