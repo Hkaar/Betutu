@@ -48,6 +48,13 @@ h6 {
   gap: 6px;
 }
 
+.item-card img, 
+#itemInfo img {
+  aspect-ratio: 4 / 3;
+  display: block;
+  max-width: 100%;
+}
+
 /* ----- Slide Styles -----*/
 .splide__slide {
   height: 200px;
@@ -275,12 +282,6 @@ h6 {
 .item-card:active {
   background-color: lightgray;
   transform: scale(0.95);
-}
-
-.item-card img {
-  aspect-ratio: 4 / 3;
-  display: block;
-  max-width: 100%;
 }
 
 /*----- Media Queries -----*/
