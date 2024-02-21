@@ -1,0 +1,38 @@
+<div class="modal-dialog modal-lg modal-fullscreen-sm-down">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h1 class="modal-title fs-5" id="cartWinTitle">My Orders</h1>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+
+    <div class="modal-body">
+      <table class="table rounded">
+        <thead>
+          <th scope="col">Item</th>
+          <th scope="col">Amount</th>
+          <th scope="col">Total</th>
+        </thead>
+
+        <tbody>
+          {% for item in items %}
+            <tr>
+              <td>{{item["name"]}}</td>
+              <td>{{item["amount"]}}</td>
+              <td>{{item["price"]}}</td>
+            </tr>
+          {% endfor %}
+
+          <tr>
+            <td class="bg-dark text-light">Total Price</td>
+            <td class="bg-dark text-light">{{total_amount}}</td>
+            <td class="bg-dark text-light">{{total_price}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      <button type="button" class="btn btn-success">Purchase</button>
+    </div>
+  </div>
+</div>
