@@ -80,7 +80,16 @@ class OrderController:
 
         async with await get_db() as db:
             pass
+        
+    @staticmethod
+    async def get_item_price(item):
+        async with await get_db() as db:
+            item_query = await db.execute(select(ItemModel.price).where(
+                (ItemModel.name == item)
+            ))
 
+            return item_query.scalar()
+        
     @staticmethod
     async def all_items(request: Request):
         token = request.cookies.get("orderToken")
@@ -95,17 +104,9 @@ class OrderController:
             return items
         
     @staticmethod
-    async def get_item_price(item):
-        async with await get_db() as db:
-            item_query = await db.execute(select(ItemModel.price).where(
-                (ItemModel.name == item)
-            ))
-
-            return item_query.scalar()
-        
-    @staticmethod
     async def all_orders(request: Request):
         result = {}
+        html = []
 
         async with await get_db() as db:
             order_query = await db.execute(select(OrderModel))
@@ -128,6 +129,9 @@ class OrderController:
                     items.append({"name": item_name, "total": total, "amount": amount})
 
                 result[order_token_query.scalar()] = items
+
+            for order in result:
+                pass
 
         return result
 
