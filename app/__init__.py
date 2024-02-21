@@ -26,7 +26,7 @@ app.include_router(webRouter)
 app.include_router(orderRouter)
 app.include_router(menuRouter)
 
-templates = Jinja2Templates("public/views")
+views = Jinja2Templates("public/views")
 
 @app.on_event("startup")
 async def init():
@@ -48,7 +48,7 @@ def error_handle(code: int, request: Request):
                 "msg": "Opps looks like you're not authorized! Please try again!"
             }
         
-            return templates.TemplateResponse(
+            return views.TemplateResponse(
                 "error.html", context=context, status_code=status.HTTP_401_UNAUTHORIZED
             )
         
@@ -59,6 +59,6 @@ def error_handle(code: int, request: Request):
                 "msg": "Looks like something went wrong! Try again in a few moments!"
             }
 
-            return templates.TemplateResponse(
+            return views.TemplateResponse(
                 "error.html", context=context, status_code=status.HTTP_408_REQUEST_TIMEOUT
             )
