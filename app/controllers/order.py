@@ -19,9 +19,56 @@ templates = Jinja2Templates("public/templates")
 
 class OrderController:
     @staticmethod
+    async def get_order(request: Request):
+        token = request.cookies.get("orderToken")
+
+        async with await get_db() as db:
+            order_status = await db.execute(select(OrderModel.status).where(OrderModel.token == token))
+
+            if order_status.scalar() and order_status != "pending":
+                context = {
+                    "request": request,
+                    "token": token
+                }
+
+                response = views.TemplateResponse("completed.html", context=context)
+                return response
+            
+            items_query = await db.execute(select(ItemModel))
+            items = {string.capwords(item[0].name) : item[0].price for item in items_query.all()}
+
+            context = {
+                "request": request,
+                "items": items
+            }
+
+            response = views.TemplateResponse("menu.html", context=context)
+
+            if not token:
+                token = await OrderController.create(request)
+                response.set_cookie("orderToken", token, httponly=True, samesite="strict")
+
+            return response
+        
+    @staticmethod
+    async def get_menu_popup(request: Request, item: str):
+        async with await get_db() as db:
+            items_query = await db.execute(select(ItemModel).where(ItemModel.name == item))
+            item = items_query.scalar()
+
+            context = {
+                "request": request,
+                "title": string.capwords(item.name),
+                "price": item.price,
+                "desc": "Just no"
+            }
+
+            return templates.TemplateResponse("menu-item.html", context=context)
+
+    @staticmethod
     async def create(request: Request) -> str:
-        token = uuid4().hex
-        current = datetime.now()
+        token = uuid4().hex[:4]
+        current = datetime.date(datetime.now())
 
         async with await get_db() as db:
             order = OrderModel(
@@ -75,10 +122,6 @@ class OrderController:
         )
 
     @staticmethod
-    async def modify(request: Request):
-        pass
-        
-    @staticmethod
     async def get_item_price(item: str):
         async with await get_db() as db:
             item_query = await db.execute(select(ItemModel.price).where(
@@ -123,7 +166,7 @@ class OrderController:
         
     @staticmethod
     async def all_orders(request: Request):
-        orders = {}
+        orders = []
 
         async with await get_db() as db:
             order_query = await db.execute(select(OrderModel))
@@ -131,19 +174,16 @@ class OrderController:
 
             for order_id in order_ids:
                 order_items_query = await db.execute(select(OrderItemModel).where(OrderItemModel.order_id == order_id))
-                order_token_query = await db.execute(select(OrderModel).where(OrderModel.id == order_id))
+                order_query = await db.execute(select(OrderModel).where(OrderModel.id == order_id))
 
                 order_items = [item[0] for item in order_items_query.all()]
-                
-                order = order_token_query.scalar()
-                order_token = order.token
-                date = order.created
+                order = order_query.scalar()
                 
                 total_amount = 0
                 items = []
 
                 for order_item in order_items:
-                    item_name = order_item.item
+                    item_name = string.capwords(order_item.item)
                     amount = order_item.amount
 
                     price = await OrderController.get_item_price(item_name.lower())
@@ -151,14 +191,20 @@ class OrderController:
 
                     total_amount += amount
 
-                    items.append({"name": item_name, "total": total, "amount": amount, "id": order_item.id})
+                    items.append({
+                        "name": item_name, 
+                        "total": total, 
+                        "amount": amount, 
+                        "id": order_item.id
+                    })
 
-                orders[order_token] = {
+                orders.append({
+                    "token": order.token,
                     "items": items,
-                    "total_price": await OrderController.total_price(request, order_token),
-                    "total_amount": total_amount,
-                    "date": date
-                }
+                    "date": order.created,
+                    "status": string.capwords(order.status),
+                    "total_price": await OrderController.total_price(request, order.token)
+                })
         
         context = {
             "request": request,
@@ -202,19 +248,13 @@ class OrderController:
         token = request.cookies.get("orderToken")
 
         async with await get_db() as db:
-            await db.execute(update(OrderModel).values({"status": "uncompleted"}).where(OrderModel.token == token))
-            await db.commit()
-
             exist = await db.execute(select(OrderModel).where(OrderModel.token == token))
 
             if exist.scalar():
-                context = {
-                    "request": request,
-                    "token": token
-                }
+                await db.execute(update(OrderModel).values({"status": "uncompleted"}).where(OrderModel.token == token))
+                await db.commit()
 
-                response = views.TemplateResponse("completed.html", context=context)
-                return response
+                return JSONResponse({"msg": "Order was completed!"})
         
         return HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

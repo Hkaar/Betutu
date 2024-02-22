@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer, DateTime
+from sqlalchemy import Column, String, Integer, Date
 from utils.db import Base
 
 class OrderModel(Base):
@@ -6,7 +6,7 @@ class OrderModel(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     token = Column(String, nullable=False)
-    created = Column(DateTime, nullable=False)
+    created = Column(Date, nullable=False)
     status = Column(String, nullable=False)
 
 class OrderItemModel(Base):
