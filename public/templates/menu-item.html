@@ -15,10 +15,12 @@
           <h3 class="mb-3">{{title}}</h3>
           <h6 class="mb-3">Rp. {{price}}</h6>
 
-          <form action="" method="post">
+          <form action="/order/add" method="post" id="itemForm">
             <div class="mb-3">
-              <label for="exampleInputPassword1" class="form-label">Amount</label>
-              <input type="number" placeholder="Enter the amount here" class="form-control" id="exampleInputPassword1">
+              <input type="hidden" name="item" id="item" value="{{title.lower()}}">
+
+              <label for="amount" class="form-label">Amount</label>
+              <input type="number" placeholder="Enter the amount here" class="form-control" name="amount" id="amount">
             </div>
 
             <p class="mb-3">

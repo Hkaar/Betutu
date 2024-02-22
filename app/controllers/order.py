@@ -7,13 +7,14 @@ from fastapi import Request, HTTPException, status
 from fastapi.responses import JSONResponse
 from fastapi.templating import Jinja2Templates
 
-from sqlalchemy import select, delete
+from sqlalchemy import select, delete, update
 
 from database.models.orders import OrderModel, OrderItemModel
 from database.models.items import ItemModel
 
 from utils.db import get_db
 
+views = Jinja2Templates("public/views")
 templates = Jinja2Templates("public/templates")
 
 class OrderController:
@@ -26,7 +27,7 @@ class OrderController:
             order = OrderModel(
                 token=token,
                 created=current,
-                status=False
+                status="pending"
             )
 
             db.add(order)
@@ -40,14 +41,11 @@ class OrderController:
         token = request.cookies.get("orderToken")
 
         async with await get_db() as db:
-            exist = await db.execute(select(OrderModel).where(
-                (OrderModel.token == token)
-            ))
+            exist = await db.execute(select(OrderModel).where(OrderModel.token == token))
 
             if exist.scalar():
-                await db.execute(delete(OrderModel).where(
-                    OrderModel.token == token
-                ))
+                await db.execute(delete(OrderModel).where(OrderModel.token == token))
+                await db.commit()
 
                 return True
         return False
@@ -57,10 +55,7 @@ class OrderController:
         token = request.cookies.get("orderToken")
 
         async with await get_db() as db:
-            order_query = await db.execute(select(OrderModel.id).where(
-                (OrderModel.token == token)
-            ))
-
+            order_query = await db.execute(select(OrderModel.id).where(OrderModel.token == token))
             order_id = order_query.scalar()
 
             if order_id:
@@ -74,7 +69,7 @@ class OrderController:
                 await db.commit()
                 await db.refresh(new_order)
 
-                return JSONResponse(content={"msg": "Successfully added item"}, headers={"Location": "/order"})
+                return JSONResponse(content={"msg": "Successfully added item"})
             
         return HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -83,13 +78,10 @@ class OrderController:
 
     @staticmethod
     async def modify(request: Request):
-        token = request.cookies.get("orderToken")
-
-        async with await get_db() as db:
-            pass
+        pass
         
     @staticmethod
-    async def get_item_price(item):
+    async def get_item_price(item: str):
         async with await get_db() as db:
             item_query = await db.execute(select(ItemModel.price).where(
                 (ItemModel.name == item)
@@ -112,7 +104,7 @@ class OrderController:
             order_items = [item[0] for item in order_items_query.all()]
 
             for order_item in order_items:
-                item_name = order_item.item
+                item_name = string.capwords(order_item.item)
                 amount = order_item.amount
 
                 price = await OrderController.get_item_price(item_name.lower())
@@ -120,7 +112,7 @@ class OrderController:
 
                 total_amount += amount
 
-                items.append({"id": order_item.id, "name": string.capwords(item_name), "total": total, "amount": amount})
+                items.append({"id": order_item.id, "name": item_name, "total": total, "amount": amount})
 
             context = {
                 "request": request,
@@ -134,7 +126,6 @@ class OrderController:
     @staticmethod
     async def all_orders(request: Request):
         result = {}
-        html = []
 
         async with await get_db() as db:
             order_query = await db.execute(select(OrderModel))
@@ -196,4 +187,28 @@ class OrderController:
             await db.commit()
 
             return JSONResponse({"msg": "Successfully deleted!"})
+        
+    @staticmethod
+    async def finish_order(request: Request):
+        token = request.cookies.get("orderToken")
+
+        async with await get_db() as db:
+            await db.execute(update(OrderModel).values({"status": "uncompleted"}).where(OrderModel.token == token))
+            await db.commit()
+
+            exist = await db.execute(select(OrderModel).where(OrderModel.token == token))
+
+            if exist.scalar():
+                context = {
+                    "request": request,
+                    "token": token
+                }
+
+                response = views.TemplateResponse("completed.html", context=context)
+                return response
+        
+        return HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Opps looks like something went wrong!"
+        )
         

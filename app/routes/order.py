@@ -57,3 +57,7 @@ async def delete_order():
 @orderRouter.delete("/delete/item")
 async def delete_order_item(request: Request, id: int):
     await OrderController.delete_item(request, id)
+
+@orderRouter.get("/complete")
+async def complete_page(request: Request):
+    return await OrderController.finish_order(request)

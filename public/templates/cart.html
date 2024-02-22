@@ -1,4 +1,4 @@
-<div class="modal-dialog modal-lg modal-fullscreen-sm-down">
+<div class="modal-dialog modal-lg modal-fullscreen-md-down">
   <div class="modal-content">
     <div class="modal-header">
       <h1 class="modal-title fs-5" id="cartWinTitle">My Orders</h1>
@@ -11,6 +11,7 @@
           <th scope="col">Item</th>
           <th scope="col">Amount</th>
           <th scope="col">Total</th>
+          <th scope="col" width="5%">Edit</th>
         </thead>
 
         <tbody>
@@ -18,21 +19,26 @@
             <tr>
               <td>{{item["name"]}}</td>
               <td>{{item["amount"]}}</td>
-              <td>{{item["price"]}}</td>
+              <td>RP. {{item["total"]}}</td>
+              <td>
+                <button type="button" class="btn delOrderItem" data-item="{{item['id']}}">
+                  <i class="fa-solid fa-trash" data-item="{{item['id']}}"></i>
+                </button>
+              </td>
             </tr>
           {% endfor %}
 
           <tr>
             <td class="bg-dark text-light">Total Price</td>
             <td class="bg-dark text-light">{{total_amount}}</td>
-            <td class="bg-dark text-light">{{total_price}}</td>
+            <td colspan="2" class="bg-dark text-light">RP. {{total_price}}</td>
           </tr>
         </tbody>
       </table>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      <button type="button" class="btn btn-success">Purchase</button>
+      <button type="button" class="btn btn-success orderComplete">Complete Order</button>
     </div>
   </div>
 </div>
