@@ -37,9 +37,7 @@ class OrderController:
             return token 
 
     @staticmethod
-    async def delete(request: Request):
-        token = request.cookies.get("orderToken")
-
+    async def delete(request: Request, token: str):
         async with await get_db() as db:
             exist = await db.execute(select(OrderModel).where(OrderModel.token == token))
 
@@ -144,16 +142,16 @@ class OrderController:
                 total_amount = 0
                 items = []
 
-                for item in order_items:
-                    item_name = item.item
-                    amount = item.amount
+                for order_item in order_items:
+                    item_name = order_item.item
+                    amount = order_item.amount
 
                     price = await OrderController.get_item_price(item_name.lower())
                     total = price * amount
 
                     total_amount += amount
 
-                    items.append({"name": item_name, "total": total, "amount": amount})
+                    items.append({"name": item_name, "total": total, "amount": amount, "id": order_item.id})
 
                 orders[order_token] = {
                     "items": items,
@@ -191,13 +189,7 @@ class OrderController:
     
     @staticmethod
     async def delete_item(request: Request, order_item_id: int):
-        token = request.cookies.get("orderToken")
-
-        if not token:
-            return HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Opps looks like something wen wrong!"
-            )
+        orderToken = request.cookies.get("orderToken")
 
         async with await get_db() as db:
             await db.execute(delete(OrderItemModel).where(OrderItemModel.id == order_item_id))
