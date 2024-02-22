@@ -57,14 +57,18 @@ h6 {
 
 /* ----- Slide Styles -----*/
 .splide__slide {
-  height: 200px;
-  background-color: darkslategray;
+  min-height: 200px;
+  max-height: 400px;
+  max-width: 300px;
+  background-color: var(--bs-light);
+  color: var(--bs-dark);
+  border-radius: 5px;
 }
 
 /* ----- Nav Bar Styles ----- */
 .navbar {
-  background-color: var(--bs-dark);
-  color: var(--bs-light) !important;
+  background-color: rgba(30, 30, 30, .7);
+  color: var(--bs-light);
 }
 
 .navbar * {
@@ -137,9 +141,10 @@ h6 {
 
 /* ----- Side Nav Styles -----*/
 #side-nav {
-  max-width: 80px;
+  max-width: 60px;
   background-color: darkslategray;
   padding: 12px;
+  width: 100%;
   transition: all 0.4s;
 }
 
@@ -152,7 +157,7 @@ h6 {
   display: flex;
   flex-direction: column;
   height: 100%;
-  gap: 4px;
+  gap: 6px;
 }
 
 #side-nav .nav-item {
@@ -241,29 +246,10 @@ h6 {
   color: var(--bs-light);
   display: flex;
   flex-direction: column;
-  padding: 6px;
+  padding: 6px 12px;
   border-radius: 5px;
   gap: 12px;
 }
-
-.app-content .order .order-items {
-  display: flex;
-  flex-direction: column;
-  background-color: var(--bs-light);
-  color: var(--bs-dark);
-  border-radius: 5px;
-}
-
-.app-content .order-items .order-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 6px 2px;
-}
-
-.app-content .order-item:not(:last-child) {
-  border-bottom: 1px solid black;
-}
-
 /* ----- Menu Styles ----- */
 .item-card {
   display: flex;

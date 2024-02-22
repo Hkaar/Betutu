@@ -12,7 +12,6 @@
   <link rel="stylesheet" href="/public/css/app.css">
 </head>
 <body>
-
   <main id="app" class="d-flex bg-dark text-light">
     <nav id="side-nav" data-collapsed="true">
       <div class="nav-items">
@@ -58,8 +57,8 @@
         <div class="row">
           <div class="col-12 mb-3">
             <div id="dashboardBtns">
-              <button type="button" class="btn btn-light">
-                Create Link
+              <button type="button" class="btn btn-success">
+                Get Menu Link
               </button>
   
               <button type="button" class="btn btn-danger">
@@ -69,34 +68,23 @@
           </div>
 
           <div class="col-12 col-md-6">
-            <div class="widget bg-light text-dark rounded mb-3 p-1">
-              <h3>Stats</h3>
+            <div class="widget bg-light text-dark rounded mb-3 p-2">
+              <h3>Statistics</h3>
 
               <div class="stats">
                 <article class="d-flex stat">
                   <span class="me-1 title">Total orders : </span>
-                  <span id="orderCount">10</span>
-                </article>
-  
-                <article class="d-flex stat">
-                  <span class="me-1 title">Earnings : </span>
-                  <span id="orderCount">10</span>
-                </article>
-  
-                <article class="d-flex stat">
-                  <span class="me-1 title">Total stock : </span>
-                  <span id="orderCount">10</span>
-                </article>
-  
-                <article class="d-flex stat">
-                  <span class="me-1 title">Number of types : </span>
-                  <span id="orderCount">10</span>
+                  <span id="orderCount">0</span>
                 </article>
               </div>
             </div>
 
-            <div class="widget bg-light text-dark rounded mb-3 p-1">
-              <h3>Items</h3>
+            <div class="widget bg-light text-dark rounded mb-3 p-2">
+              <div class="d-flex justify-content-between mb-2">
+                <h3>Items</h3>
+
+                <button type="button" class="btn">+Add</button>
+              </div>
 
               <div class="items d-flex flex-column">
                 <article class="item">
@@ -148,83 +136,58 @@
           </div>
 
           <div class="col-12 col-md-6">
-            <div class="widget bg-light text-dark rounded p-1">
+            <div class="widget bg-light text-dark rounded p-2">
               <h3>Orders</h3>
 
               <div class="orders d-flex flex-column">
                 <article class="order">
-                  <span class="order-token">
-                    bd333fdf2
-                  </span>
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span>bd333fdf2</span>
 
-                  <div class="order-items">
-                    <article class="order-item">
-                      <span>Ayam Geprek</span>
-                      <span>Rp. 12.000</span>
-                    </article>
+                    <div class="d-flex">
+                      <button type="button" class="btn btn-dark">
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
 
-                    <article class="order-item">
-                      <span>Ayam Geprek</span>
-                      <span>Rp. 12.000</span>
-                    </article>
+                      <button type="button" class="btn btn-dark">
+                        <i class="fa-solid fa-edit"></i>
+                      </button>
 
-                    <article class="order-item">
-                      <span>Ayam Geprek</span>
-                      <span>Rp. 12.000</span>
-                    </article>
+                      <button type="button" class="btn btn-dark">
+                        <i class="fa-solid fa-check"></i>
+                      </button>
+                    </div>
                   </div>
 
-                  <span class="total-price">Rp. 100.000</span>
-                </article>
+                  <table class="table table-striped rounded">
+                    <thead>
+                      <th scope="col">Item</th>
+                      <th scope="col">Amount</th>
+                      <th scope="col">Total</th>
+                      <th scope="col" width="5%">Edit</th>
+                    </thead>
+            
+                    <tbody>
+                      <tr>
+                        <td>Ayam Geprek</td>
+                        <td>2</td>
+                        <td>RP. 24.000</td>
+                        <td>
+                          <button type="button" class="btn delOrderItem" data-item="{{item['id']}}">
+                            <i class="fa-solid fa-trash" data-item="{{item['id']}}"></i>
+                          </button>
+                        </td>
+                      </tr>
+            
+                      <tr>
+                        <td>Total Price</td>
+                        <td>2</td>
+                        <td colspan="2">RP. 24.000</td>
+                      </tr>
+                    </tbody>
+                  </table>
 
-                <article class="order">
-                  <span class="order-token">
-                    bd333fdf2
-                  </span>
-
-                  <div class="order-items">
-                    <article class="order-item">
-                      <span>Ayam Geprek</span>
-                      <span>Rp. 12.000</span>
-                    </article>
-
-                    <article class="order-item">
-                      <span>Ayam Geprek</span>
-                      <span>Rp. 12.000</span>
-                    </article>
-
-                    <article class="order-item">
-                      <span>Ayam Geprek</span>
-                      <span>Rp. 12.000</span>
-                    </article>
-                  </div>
-
-                  <span class="total-price">Rp. 100.000</span>
-                </article>
-
-                <article class="order">
-                  <span class="order-token">
-                    bd333fdf2
-                  </span>
-
-                  <div class="order-items">
-                    <article class="order-item">
-                      <span>Ayam Geprek</span>
-                      <span>Rp. 12.000</span>
-                    </article>
-
-                    <article class="order-item">
-                      <span>Ayam Geprek</span>
-                      <span>Rp. 12.000</span>
-                    </article>
-
-                    <article class="order-item">
-                      <span>Ayam Geprek</span>
-                      <span>Rp. 12.000</span>
-                    </article>
-                  </div>
-
-                  <span class="total-price">Rp. 100.000</span>
+                  <span>Created at : 12-01-2012 </span>
                 </article>
               </div>
             </div>
@@ -237,6 +200,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/splidejs/4.1.0/js/splide.min.js" integrity="sha512-J0BNj3Jkel+lOk5NSuRgZT5ArOfSRV/1Q3tmbzC/C2lhWCp9KyqRnQkfuhIP0C3yMvXq4AKEnHmP4VuMK8PU4g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.7/axios.min.js" integrity="sha512-NQfB/bDaB8kaSXF8E77JjhHG5PM6XVRxvHzkZiwl3ddWCEPBa23T76MuWSwAJdMGJnmQqM0VeY9kFszsrBEFrQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <script src="/public/js/app.js"></script>
 </body>

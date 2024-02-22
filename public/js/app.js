@@ -137,6 +137,18 @@ $(document).ready(() => {
         setInterval(setTime, 1000)
     }
 
+    if (document.querySelector("#side-nav")) {
+        $(document).on("click", ".side-nav-close", (event) => {
+            console.log("hey")
+            document.querySelector("#side-nav").setAttribute("data-collapsed", "true")
+        })
+
+        $(document).on("click", ".side-nav-open", (event) => {
+            console.log("hey")
+            document.querySelector("#side-nav").setAttribute("data-collapsed", "false")
+        })
+    }
+
     $(document).on("click", ".item-card", (event) => {
         displayItem(event.target.getAttribute("data-item"))
     })
