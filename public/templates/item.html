@@ -1,0 +1,16 @@
+{% for item in items %}
+  <article class="item">
+    <span>{{item["name"]}}</span>
+    <span>Rp. {{item["price"]}}</span>
+
+    <div class="d-flex flex-column flex-sm-row">
+      <button type="button" class="btn btn-dark">
+        <i class="fa-solid fa-trash"></i>
+      </button>
+
+      <button type="button" class="btn btn-dark">
+        <i class="fa-solid fa-edit"></i>
+      </button>
+    </div>
+  </article>
+{% endfor %}

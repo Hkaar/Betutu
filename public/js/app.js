@@ -102,7 +102,7 @@ function finishOrder() {
     })
 }
 
-function setTime () {
+function setTime() {
     const clock = document.getElementById("dashboardClock");
     const date = new Date();
 
@@ -118,6 +118,21 @@ function setTime () {
     }
 
     clock.innerHTML = `${hours}:${mins}`
+}
+
+function getOrders() {
+    const orders = document.querySelector(".orders");
+
+    axios({
+        method: "GET",
+        url: "/order/all"
+    })
+    .then(response => {
+        orders.innerHTML = response.data
+    })
+    .catch(error => {
+        console.log(error)
+    })
 }
 
 $(document).ready(() => {
@@ -147,6 +162,10 @@ $(document).ready(() => {
             console.log("hey")
             document.querySelector("#side-nav").setAttribute("data-collapsed", "false")
         })
+    }
+
+    if (document.querySelector(".orders")) {
+        setInterval(getOrders, 15000)
     }
 
     $(document).on("click", ".item-card", (event) => {

@@ -1,0 +1,53 @@
+{% for token in orders %}
+  <article class="order">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <span>{{token}}</span>
+
+      <div class="d-flex">
+        <button type="button" class="btn btn-dark">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+
+        <button type="button" class="btn btn-dark">
+          <i class="fa-solid fa-edit"></i>
+        </button>
+
+        <button type="button" class="btn btn-dark">
+          <i class="fa-solid fa-check"></i>
+        </button>
+      </div>
+    </div>
+
+    <table class="table table-striped rounded">
+      <thead>
+        <th scope="col">Item</th>
+        <th scope="col">Amount</th>
+        <th scope="col">Total</th>
+        <th scope="col" width="5%">Edit</th>
+      </thead>
+
+      <tbody>
+        {% for item in orders[token]["items"] %}
+          <tr>
+            <td>{{item["name"]}}</td>
+            <td>{{item["amount"]}}</td>
+            <td>RP. {{item["total"]}}</td>
+            <td>
+              <button type="button" class="btn delOrderItem">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        {% endfor %}
+
+        <tr>
+          <td>Total Price</td>
+          <td>{{orders[token]["total_amount"]}}</td>
+          <td colspan="2">RP. {{orders[token]["total_price"]}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <span>Created at : {{orders[token]["date"]}}</span>
+  </article>
+{% endfor %}

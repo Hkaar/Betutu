@@ -125,7 +125,7 @@ class OrderController:
         
     @staticmethod
     async def all_orders(request: Request):
-        result = {}
+        orders = {}
 
         async with await get_db() as db:
             order_query = await db.execute(select(OrderModel))
@@ -133,9 +133,15 @@ class OrderController:
 
             for order_id in order_ids:
                 order_items_query = await db.execute(select(OrderItemModel).where(OrderItemModel.order_id == order_id))
-                order_token_query = await db.execute(select(OrderModel.token).where(OrderModel.id == order_id))
+                order_token_query = await db.execute(select(OrderModel).where(OrderModel.id == order_id))
 
                 order_items = [item[0] for item in order_items_query.all()]
+                
+                order = order_token_query.scalar()
+                order_token = order.token
+                date = order.created
+                
+                total_amount = 0
                 items = []
 
                 for item in order_items:
@@ -145,18 +151,29 @@ class OrderController:
                     price = await OrderController.get_item_price(item_name.lower())
                     total = price * amount
 
+                    total_amount += amount
+
                     items.append({"name": item_name, "total": total, "amount": amount})
 
-                result[order_token_query.scalar()] = items
+                orders[order_token] = {
+                    "items": items,
+                    "total_price": await OrderController.total_price(request, order_token),
+                    "total_amount": total_amount,
+                    "date": date
+                }
+        
+        context = {
+            "request": request,
+            "orders": orders
+        }
 
-            for order in result:
-                pass
-
-        return result
+        return templates.TemplateResponse("order-item.html", context=context)
 
     @staticmethod
-    async def total_price(request: Request):
-        token = request.cookies.get("orderToken")
+    async def total_price(request: Request, token: str = None):
+        if not token:
+            token = request.cookies.get("orderToken")
+        
         price = 0
 
         async with await get_db() as db:
