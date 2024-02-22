@@ -1,15 +1,11 @@
-{% for token in orders %}
+{% for order in orders %}
   <article class="order">
     <div class="d-flex justify-content-between align-items-center mb-3">
-      <span>{{token}}</span>
+      <span>{{order["token"]}}</span>
 
       <div class="d-flex">
-        <button type="button" class="btn btn-dark">
-          <i class="fa-solid fa-trash"></i>
-        </button>
-
-        <button type="button" class="btn btn-dark">
-          <i class="fa-solid fa-edit"></i>
+        <button type="button" class="btn btn-dark deleteOrder" data-token="{{order['token']}}">
+          <i class="fa-solid fa-trash" data-token="{{order['token']}}"></i>
         </button>
 
         <button type="button" class="btn btn-dark">
@@ -27,14 +23,14 @@
       </thead>
 
       <tbody>
-        {% for item in orders[token]["items"] %}
+        {% for item in order["items"] %}
           <tr>
             <td>{{item["name"]}}</td>
             <td>{{item["amount"]}}</td>
             <td>RP. {{item["total"]}}</td>
             <td>
-              <button type="button" class="btn delOrderItem">
-                <i class="fa-solid fa-trash"></i>
+              <button type="button" class="btn delOrderItem" data-item="{{item['id']}}">
+                <i class="fa-solid fa-trash" data-item="{{item['id']}}"></i>
               </button>
             </td>
           </tr>
@@ -42,12 +38,15 @@
 
         <tr>
           <td>Total Price</td>
-          <td>{{orders[token]["total_amount"]}}</td>
-          <td colspan="2">RP. {{orders[token]["total_price"]}}</td>
+          <td>{{order["total_amount"]}}</td>
+          <td colspan="2">RP. {{order["total_price"]}}</td>
         </tr>
       </tbody>
     </table>
 
-    <span>Created at : {{orders[token]["date"]}}</span>
+    <div class="d-flex justify-content-between">
+      <span>Created at : {{order["date"]}}</span>
+      <span>Status: {{order["status"]}}</span>
+    </div>
   </article>
 {% endfor %}

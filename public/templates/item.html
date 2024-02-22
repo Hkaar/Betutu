@@ -4,12 +4,12 @@
     <span>Rp. {{item["price"]}}</span>
 
     <div class="d-flex flex-column flex-sm-row">
-      <button type="button" class="btn btn-dark">
-        <i class="fa-solid fa-trash"></i>
+      <button type="button" class="btn btn-dark delItem" data-item="{{item['name'].lower()}}">
+        <i class="fa-solid fa-trash" data-item="{{item['name'].lower()}}"></i>
       </button>
 
-      <button type="button" class="btn btn-dark">
-        <i class="fa-solid fa-edit"></i>
+      <button type="button" class="btn btn-dark modifyItem" data-item="{{item['name'].lower()}}">
+        <i class="fa-solid fa-edit" data-item="{{item['name'].lower()}}"></i>
       </button>
     </div>
   </article>

@@ -43,7 +43,14 @@ function addItem() {
         data: formData
     })
     .then(response => {
-        console.log(response)
+        const popup = bootstrap.Modal.getInstance(document.getElementById("itemInfo"));
+
+        if (popup) {
+            popup.hide();
+        }
+
+        const notify = new bootstrap.Modal(document.getElementById("notify"));
+        notify.show();
     })
     .catch(error => {
         console.log(error)
@@ -56,7 +63,11 @@ function deleteOrderItem(orderItemId) {
         url: `/order/delete/item?id=${orderItemId}`
     })
     .then(response => {
-        refreshCart()  
+        if (document.querySelector(".orders")) {
+            getOrders()
+        } else {
+            refreshCart()  
+        }
     })
     .catch(error => {
         console.log(error)
@@ -71,31 +82,31 @@ function refreshCart() {
         url: "/order/orders"
     })
     .then(response => {
-        popup.innerHTML = response.data;
-
         // Close the existing modal
         const existingModal = bootstrap.Modal.getInstance(popup);
+
         if (existingModal) {
             existingModal.hide();
-            existingModal.dispose();
         }
+
+        popup.innerHTML = response.data;
 
         // Open the updated cart modal
         const newModal = new bootstrap.Modal(popup);
         newModal.show();
     })
-    .catch(error => (
-        console.log(error)
-    ));
+    .catch(error => {
+        console.log(error);
+    });
 }
 
 function finishOrder() {
     axios({
-        method: "GET",
+        method: "PUT",
         url: "/order/complete"
     })
     .then(response => {
-        window.location = "/order/complete"
+        window.location = "/order/"
     })
     .catch(error => {
         console.log(error)
@@ -135,6 +146,101 @@ function getOrders() {
     })
 }
 
+function deleteOrder(token) {
+    axios({
+        method: "DELETE",
+        url: `/order/delete?token=${token}`
+    })
+    .then(response => {
+        getOrders()
+    })
+    .catch(error => {
+        console.log(error)
+    })
+}
+
+function displayMenuItems() {
+    const items = document.querySelector(".items")
+
+    axios({
+        method: "GET",
+        url: "/menu"
+    })
+    .then(response => {
+        items.innerHTML = response.data;
+    })
+    .catch(error => {
+        console.log(error)
+    })
+}
+
+function deleteMenuItem(item) {
+    axios({
+        method: "DELETE",
+        url: `/menu/delete?item=${item}`
+    })
+    .then(response => {
+        displayMenuItems()
+    })
+    .catch(error => {
+        console.log(error)
+    })
+}
+
+function addMenuItem() {
+    const formData = new FormData(document.getElementById("addItemForm"))
+
+    axios({
+        method: "POST",
+        url: "/menu/add",
+        data: formData
+    })
+    .then(response => {
+        console.log(response)
+        window.location = "/user/home"
+    })
+    .catch(error => {
+        console.log(error)
+    })
+}
+
+function displayModifyMenu(item) {
+    const modifyPopUp = document.querySelector("#modifyItem")
+
+    axios({
+        method: "GET",
+        url: `/menu/popup?item=${item}`
+    })
+    .then(response => {
+        modifyPopUp.innerHTML = response.data;
+
+        console.log(modifyPopUp)
+
+        const modal = new bootstrap.Modal(modifyPopUp);
+        modal.show()
+    })
+    .catch(error => {
+        console.log(error)
+    })
+}
+
+function submitModified() {
+    const formData = new FormData(document.getElementById("modifyItemForm"))
+
+    axios({
+        method: "PUT",
+        url: "/menu/update",
+        data: formData
+    })
+    .then(response => {
+        console.log(response)
+        window.location = "/user/home"
+    })
+    .catch(error => {
+        console.log(error)
+    })
+}
+
 $(document).ready(() => {
     'use strict';
 
@@ -154,18 +260,20 @@ $(document).ready(() => {
 
     if (document.querySelector("#side-nav")) {
         $(document).on("click", ".side-nav-close", (event) => {
-            console.log("hey")
             document.querySelector("#side-nav").setAttribute("data-collapsed", "true")
         })
 
         $(document).on("click", ".side-nav-open", (event) => {
-            console.log("hey")
             document.querySelector("#side-nav").setAttribute("data-collapsed", "false")
         })
     }
 
     if (document.querySelector(".orders")) {
-        setInterval(getOrders, 15000)
+        getOrders()
+        displayMenuItems()
+
+        setInterval(getOrders, 7000)
+        setInterval(displayMenuItems, 7000)
     }
 
     $(document).on("click", ".item-card", (event) => {
@@ -177,15 +285,39 @@ $(document).ready(() => {
     })
 
     $(document).on("submit", "#itemForm", (event) => {
-        addItem();
+        addItem(); 
         return false;
     });
+
+    $(document).on("submit", "#addItemForm", (event) => {
+        addMenuItem();
+        displayMenuItems();
+        return false;
+    })
+
+    $(document).on("submit", "#modifyItemForm", (event) => {
+        submitModified();
+        displayMenuItems();
+        return false;
+    })
 
     $(document).on("click", ".delOrderItem", (event) => {
         deleteOrderItem(event.target.getAttribute("data-item"))
     })
 
+    $(document).on("click", ".deleteOrder", (event) => {
+        deleteOrder(event.target.getAttribute("data-token"))
+    })
+
     $(document).on("click", ".orderComplete", (event) => {
         finishOrder();
+    })
+
+    $(document).on("click", ".delItem", (event) => {
+        deleteMenuItem(event.target.getAttribute("data-item"))
+    })
+
+    $(document).on("click", ".modifyItem", (event) => {
+        displayModifyMenu(event.target.getAttribute("data-item"))
     })
 })
