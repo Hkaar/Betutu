@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Request, status, Form
+from fastapi import APIRouter, Depends, Request, Form, UploadFile, File
 
 from app.controllers.menu import MenuController
 
@@ -11,8 +11,8 @@ async def get_items(request: Request):
     return await MenuController.get_items(request)
 
 @menuRouter.post("/add")
-async def add_menu_item(request: Request, name: str = Form(None), price: float = Form(None)):
-    return await MenuController.add_item(request, name, price)
+async def add_menu_item(request: Request, name: str = Form(None), price: float = Form(None), desc: str = Form(None), img: UploadFile = File(None)):
+    return await MenuController.add_item(request, name, price, desc, img)
 
 @menuRouter.put("/update")
 async def update_menu_item(request: Request, old_name: str = Form(None), name: str = Form(None), price: float = Form(None)):

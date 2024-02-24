@@ -23,6 +23,10 @@ async def get_order_items(request: Request):
 async def get_all_orders(request: Request):
     return await OrderController.all_orders(request)
 
+@orderRouter.get("/total")
+async def total_orders(request: Request):
+    return await OrderController.total_orders(request)
+
 @orderRouter.post("/add")
 async def add_order_item(request: Request, item: str = Form(None), amount: int = Form(None)):
     await OrderController.add_item(request, item, amount)
@@ -35,10 +39,18 @@ async def add_order_item(request: Request, item: str = Form(None), amount: int =
 async def delete_order(request: Request, token: str):
     return await OrderController.delete(request, token)
 
+@orderRouter.delete("/delete/all", dependencies=[Depends(SessionAuth.validate_session)])
+async def delete_all(request: Request):
+    return await OrderController.delete_all(request)
+
 @orderRouter.delete("/delete/item")
 async def delete_order_item(request: Request, id: int):
     await OrderController.delete_item(request, id)
 
-@orderRouter.put("/complete")
-async def complete_page(request: Request):
+@orderRouter.put("/finish")
+async def finish_page(request: Request):
     return await OrderController.finish_order(request)
+
+@orderRouter.put("/complete")
+async def complete_order(request: Request, token: str):
+    return await OrderController.complete_order(request, token)

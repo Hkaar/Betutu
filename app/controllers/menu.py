@@ -1,6 +1,10 @@
 import string
 
-from fastapi import Request
+import aiofiles
+
+from pathlib import Path
+
+from fastapi import Request, File, UploadFile
 from fastapi.templating import Jinja2Templates
 
 from sqlalchemy import select, delete, insert, update
@@ -39,16 +43,33 @@ class MenuController:
             return templates.TemplateResponse("item.html", context=context)
         
     @staticmethod
-    async def add_item(request: Request, name: str, price: float):
+    async def add_item(request: Request, name: str, price: float, desc: str, img: UploadFile = File(None)):
+        async def save_upload_file(file: UploadFile):
+            uploads_path = Path("public/assets/uploads")
+            uploads_path.mkdir(parents=True, exist_ok=True)
+
+            file_path = uploads_path / file.filename
+
+            async with aiofiles.open(file_path, 'wb') as f:
+                while content := await file.read(65536):  # Read and write in chunks of 64 KB
+                    await f.write(content)
+
+            return str(file_path)
+
         async with await get_db() as db:
             exist = await db.execute(select(ItemModel).where(ItemModel.name == name))
 
             if not exist.scalar():
-                await db.execute(insert(ItemModel).values({"name": name.lower(), "price": price}))
+                if not desc:
+                    desc = "No description"
+
+                img_path = await save_upload_file(img)
+
+                await db.execute(insert(ItemModel).values({"name": name.lower(), "price": price, "desc": desc, "img": img_path}))
                 await db.commit()
 
                 return True 
-        return False
+        return False   
     
     @staticmethod
     async def modify_item(request: Request, old_name: str, new_name: str, price: float):
@@ -56,7 +77,7 @@ class MenuController:
             exist = await db.execute(select(ItemModel).where(ItemModel.name == old_name))
 
             if exist.scalar():
-                await db.execute(update(ItemModel).values({"name": new_name, "price": price}).where(ItemModel.name == old_name))
+                await db.execute(update(ItemModel).values({"name": new_name.lower(), "price": price}).where(ItemModel.name == old_name))
                 await db.commit()
 
                 return True
@@ -65,7 +86,7 @@ class MenuController:
     @staticmethod
     async def delete_item(request: Request, name: str):
         async with await get_db() as db:
-            exists = await db.execute(select(ItemModel).where(ItemModel.name == name))
+            exists = await db.execute(select(ItemModel).where(ItemModel.name == name.lower()))
             exist = exists.scalar()
 
             if exist:

@@ -7,7 +7,7 @@ from fastapi import Request, HTTPException, status
 from fastapi.responses import JSONResponse
 from fastapi.templating import Jinja2Templates
 
-from sqlalchemy import select, delete, update
+from sqlalchemy import select, delete, update, func
 
 from database.models.orders import OrderModel, OrderItemModel
 from database.models.items import ItemModel
@@ -23,9 +23,10 @@ class OrderController:
         token = request.cookies.get("orderToken")
 
         async with await get_db() as db:
-            order_status = await db.execute(select(OrderModel.status).where(OrderModel.token == token))
+            status_query = await db.execute(select(OrderModel.status).where(OrderModel.token == token))
+            order_status = status_query.scalar()
 
-            if order_status.scalar() and order_status != "pending":
+            if order_status and order_status != "pending":
                 context = {
                     "request": request,
                     "token": token
@@ -35,7 +36,7 @@ class OrderController:
                 return response
             
             items_query = await db.execute(select(ItemModel))
-            items = {string.capwords(item[0].name) : item[0].price for item in items_query.all()}
+            items = [{"name": string.capwords(item[0].name), "price": item[0].price, "img": item[0].img} for item in items_query.all()]
 
             context = {
                 "request": request,
@@ -44,7 +45,9 @@ class OrderController:
 
             response = views.TemplateResponse("menu.html", context=context)
 
-            if not token:
+            exist = await db.execute(select(OrderModel.token).where(OrderModel.token == token))
+
+            if not token or not exist.scalar():
                 token = await OrderController.create(request)
                 response.set_cookie("orderToken", token, httponly=True, samesite="strict")
 
@@ -60,7 +63,8 @@ class OrderController:
                 "request": request,
                 "title": string.capwords(item.name),
                 "price": item.price,
-                "desc": "Just no"
+                "desc": item.desc,
+                "img": item.img
             }
 
             return templates.TemplateResponse("menu-item.html", context=context)
@@ -234,6 +238,13 @@ class OrderController:
         return price
     
     @staticmethod
+    async def total_orders(request: Request):
+        async with await get_db() as db:
+            orders_query = await db.execute(select(OrderModel))
+
+            return len(orders_query.all())
+
+    @staticmethod
     async def delete_item(request: Request, order_item_id: int):
         orderToken = request.cookies.get("orderToken")
 
@@ -260,4 +271,28 @@ class OrderController:
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Opps looks like something went wrong!"
         )
+    
+    @staticmethod
+    async def complete_order(request: Request, token: str):
+        async with await get_db() as db:
+            exist = await db.execute(select(OrderModel).where(OrderModel.token == token))
+
+            if exist.scalar():
+                await db.execute(update(OrderModel).values({"status": "completed"}).where(OrderModel.token == token))
+                await db.commit()
+
+                return JSONResponse({"msg": "Completed order"})
+            
+        return HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Opps looks like something went wrong!"
+        )
+
+    @staticmethod
+    async def delete_all(request: Request):
+        async with await get_db() as db:
+            await db.execute(delete(OrderModel))
+            await db.commit()
+
+            return JSONResponse({"msg": "Deleted all orders!"})
         

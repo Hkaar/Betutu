@@ -7,3 +7,5 @@ class ItemModel(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     name = Column(String, nullable=False, unique=True)
     price = Column(Float, nullable=False)
+    desc = Column(String)
+    img = Column(String)
