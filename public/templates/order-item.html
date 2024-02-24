@@ -8,9 +8,15 @@
           <i class="fa-solid fa-trash" data-token="{{order['token']}}"></i>
         </button>
 
-        <button type="button" class="btn btn-dark">
-          <i class="fa-solid fa-check"></i>
-        </button>
+        {% if orders["status"] != "completed"%}
+          <button type="button" class="btn btn-dark markOrder" data-token="{{order['token']}}">
+            <i class="fa-solid fa-check" data-token="{{order['token']}}"></i>
+          </button>
+        {% else %}
+          <button type="disabled" class="btn btn-secondary">
+            <i class="fa-solid fa-check"></i>
+          </button>
+        {% endif %}
       </div>
     </div>
 

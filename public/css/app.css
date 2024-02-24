@@ -14,7 +14,6 @@
 }
 
 body {
-  overflow-x: hidden;
   position: relative;
 }
 
@@ -67,12 +66,17 @@ h6 {
 
 /* ----- Nav Bar Styles ----- */
 .navbar {
-  background-color: rgba(30, 30, 30, .7);
+  background-color: rgba(30, 30, 30, .95);
   color: var(--bs-light);
 }
 
 .navbar * {
-  color: inherit !important;
+  color: inherit;
+}
+
+.navbar .nav-item {
+  color: inherit;
+  transition: all .4s;
 }
 
 .navbar-toggler {
@@ -88,7 +92,7 @@ h6 {
 
 /* ----- Hero Styles ----- */
 #hero {
-  background-image: url(/public/assets/imgs/bg.jpg);
+  background-image: url(/public/assets/imgs/bg.png);
   background-size: cover;
   min-height: 90vh;
 }
@@ -250,6 +254,7 @@ h6 {
   border-radius: 5px;
   gap: 12px;
 }
+
 /* ----- Menu Styles ----- */
 .item-card {
   display: flex;

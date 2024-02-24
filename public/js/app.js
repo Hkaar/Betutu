@@ -103,7 +103,7 @@ function refreshCart() {
 function finishOrder() {
     axios({
         method: "PUT",
-        url: "/order/complete"
+        url: "/order/finish"
     })
     .then(response => {
         window.location = "/order/"
@@ -241,6 +241,47 @@ function submitModified() {
     })
 }
 
+function setStats() {
+    const counter = document.querySelector("#orderCount")
+
+    axios({
+        method: "GET",
+        url: "/order/total"
+    })
+    .then(response => {
+        counter.innerHTML = response.data
+    })
+    .catch(error => {
+        console.log(error)
+    })
+}
+
+function markOrderComplete(token) {
+    axios({
+        method: "PUT",
+        url: `/order/complete?token=${token}`
+    })
+    .then(response => {
+        getOrders();
+    })
+    .catch(error => {
+        console.log(error)
+    })
+}
+
+function resetOrders() {
+    axios({
+        method: "DELETE",
+        url: "/order/delete/all"
+    })
+    .then(response => {
+        getOrders();
+    })
+    .catch(error => {
+        console.log(error)
+    })
+}
+
 $(document).ready(() => {
     'use strict';
 
@@ -271,9 +312,11 @@ $(document).ready(() => {
     if (document.querySelector(".orders")) {
         getOrders()
         displayMenuItems()
+        setStats()
 
         setInterval(getOrders, 7000)
         setInterval(displayMenuItems, 7000)
+        setInterval(setStats, 7000)
     }
 
     $(document).on("click", ".item-card", (event) => {
@@ -313,11 +356,19 @@ $(document).ready(() => {
         finishOrder();
     })
 
+    $(document).on("click", ".markOrder", (event) => {
+        markOrderComplete(event.target.getAttribute("data-token"))
+    })
+
     $(document).on("click", ".delItem", (event) => {
         deleteMenuItem(event.target.getAttribute("data-item"))
     })
 
     $(document).on("click", ".modifyItem", (event) => {
         displayModifyMenu(event.target.getAttribute("data-item"))
+    })
+
+    $(document).on("click", ".resetOrders", (event) => {
+        resetOrders();
     })
 })

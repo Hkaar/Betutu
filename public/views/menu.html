@@ -25,13 +25,13 @@
       <div class="row">
         {% for item in items %}
           <div class="col-12 col-md-6 col-lg-4 col-xl-3 d-flex justify-content-center mb-3">
-            <div class="item-card" data-item="{{item.lower()}}">
-              <img src="/public/assets/imgs/placeholder-1.jpg" alt="" data-item="{{item.lower()}}" class="img-fluid">
+            <div class="item-card" data-item="{{item['name'].lower()}}">
+              <img src="/{{item['img']}}" alt="" data-item="{{item['name'].lower()}}" class="img-fluid">
               
               <div class="d-flex flex-column text-center">
-                <h5 data-item="{{item.lower()}}">{{item}}</h5>
+                <h5 data-item="{{item['name'].lower()}}">{{item['name']}}</h5>
     
-                <span data-item="{{item.lower()}}">Rp. {{items[item]}}</span>
+                <span data-item="{{item['name'].lower()}}">Rp. {{item['price']}}</span>
               </div>
             </div>
           </div>
