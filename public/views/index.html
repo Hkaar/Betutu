@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Geprek</title>
+  <title>Geprek Ulalaah</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/splidejs/4.1.0/css/splide.min.css" integrity="sha512-KhFXpe+VJEu5HYbJyKQs9VvwGB+jQepqb4ZnlhUF/jQGxYJcjdxOTf6cr445hOc791FFLs18DKVpfrQnONOB1g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -16,20 +16,20 @@
   <section id="hero" class="d-flex flex-column text-light">
     <nav class="navbar navbar-expand-lg">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Geprek</a>
+        <a class="navbar-brand" href="#">Geprek Ulalaah</a>
         
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+          <i class="fa-solid fa-bars"></i>
         </button>
         
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#about">About Us</a>
+              <a class="nav-link" href="#about">Tentang Kami</a>
             </li>
   
             <li class="nav-item">
-              <a class="nav-link" href="#foods">Foods</a>
+              <a class="nav-link" href="#foods">Makanan</a>
             </li>
 
             <li class="nav-item">
@@ -43,47 +43,56 @@
     <div class="container-lg flex-fill d-flex flex-column justify-content-center align-items-center align-items-lg-start text-center text-lg-start">
       <article class="content">
         <h1>
-          Welcome to our website
+          Ayam Geprek Ulalaah!
         </h1>
   
         <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consequatur, at! Natus vitae, laudantium quos omnis temporibus delectus error excepturi aut illo rerum dolorem ducimus porro perferendis sapiente soluta veniam voluptatibus!
+          Ayam geprek enaak dengan harga terjangkau
         </p>
       </article>
     </div>
   </section>
 
-  <div class="animate-scrollbottom"></div>
-
   <section id="about" class="d-flex flex-column justify-content-center">
     <div class="container-lg d-flex flex-column flex-lg-row justify-content-between flex-fill">
-      <article class="d-flex flex-column justify-content-center text-center text-lg-start mb-3">
-        <h3 class="mb-3">About Us</h3>
+      <div class="row">
+        <div class="col-12 col-lg-6">
+          <article class="d-flex flex-column justify-content-center text-center text-lg-start mb-3 h-100">
+            <h3 class="mb-3">Tentang Kami</h3>
+    
+            <p>
+              Kami menyediakan kuliner ayam geprek menggunakan sambel yang menendang dengan harga yang terjangkau untuk setiap kalangan
+            </p>
+          </article>    
+        </div>
 
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Libero, deleniti sint! Consequatur neque alias quaerat minus enim sit dicta eaque rerum sequi at. Nulla veritatis inventore nemo nisi quia enim?
-        </p>
-      </article>
-
-      <div class="bg-dark" style="min-width: 30%; min-height: 300px;">
-        hey
+        <div class="col-12 col-lg-6">
+          <img src="/public/assets/imgs/bg.png" alt="" class="img-fluid" style="aspect-ratio: 4 / 3; object-fit: cover;">
+        </div>
       </div>
     </div>
   </section>
 
   <section id="foods" class="bg-dark text-light d-flex flex-column justify-content-center">
     <div class="container-lg">
-      <h3 class="text-center mb-3">Our Menu</h3>
+      <h3 class="text-center mb-3">Menu Kami</h3>
 
       <section class="splide" aria-label="Splide Basic HTML Example">
         <div class="splide__track">
           <ul class="splide__list">
-            <li class="splide__slide">Slide 01</li>
-            <li class="splide__slide">Slide 02</li>
-            <li class="splide__slide">Slide 03</li>
-            <li class="splide__slide">Slide 04</li>
-            <li class="splide__slide">Slide 05</li>
-            <li class="splide__slide">Slide 06</li>
+            {% for item in items %}
+              <li class="splide__slide">
+                <div class="item-card">
+                  <img src="/{{item['img']}}" alt="" class="img-fluid">
+                  
+                  <div class="d-flex flex-column text-center">
+                    <h5>{{item["name"]}}</h5>
+        
+                    <span>Rp. {{item["price"]}}</span>
+                  </div>
+                </div>
+              </li>
+            {% endfor %}
           </ul>
         </div>
       </section>
@@ -94,14 +103,16 @@
     <div class="container-lg d-flex flex-column flex-lg-row justify-content-between flex-fill">
       <article class="d-flex flex-column flex-md-row flex-lg-column justify-content-between justify-content-lg-center mb-3">
         <article>
-          <h3>Ready to order?</h3>
+          <h3>Siap memesan?</h3>
 
           <p>
-            Press the button, or go to address....
+            Pergi ke <mark>Gg. Wahyu Muding Asri, Kerobokan Kaja, Kec. Kuta Utara, Kabupaten Badung, Bali</mark>
           </p>
         </article>
 
-        <button type="button" class="btn btn-dark">Press Here!</button>
+        <article class="d-flex flex-column">
+          <span class="mb-3">Terlalu jauh?, coba order online!</span>
+        </article>
       </article>
 
       <div class="d-flex justify-content-center">
@@ -114,37 +125,37 @@
     <div class="container-lg d-flex flex-column flex-fill">
       <div class="d-flex flex-column flex-lg-row justify-content-between mb-3">
         <article>
-          <h3 class="mb-3">Geprek</h3>
+          <h3 class="mb-3">Geprek Ulalaah</h3>
   
           <p>
-            Your go to place for flatten chicken
+            Ayam Geprek harga terjangkau enaaak!
           </p>
         </article>
 
         <article class="mb-3">
-          <h3 class="d-none d-md-block mb-3">Follow Us!</h3>
+          <h3 class="d-none d-md-block mb-3">Ikuti Kami!</h3>
 
           <div class="d-flex">
-            <a href="www.facebook.com" class="social me-2">
+            <a href="www.facebook.com" target="_blank" class="social me-2">
               <i class="fa-brands fa-facebook"></i>
             </a>
 
-            <a href="www.instagram.com" class="social me-2">
+            <a href="https://www.instagram.com" target="_blank" class="social me-2">
               <i class="fa-brands fa-instagram"></i>
             </a>
 
-            <a href="www.tiktok.com" class="social me-2">
+            <a href="https://www.tiktok.com" target="_blank" class="social me-2">
               <i class="fa-brands fa-tiktok"></i>
             </a>
           </div>
         </article>
 
         <article>
-          <h3 class="mb-3">Contact Us!</h3>
+          <h3 class="mb-3">Kontak Kami!</h3>
 
           <div class="d-flex align-items-center">
             <i class="fa-solid fa-phone me-2"></i>
-            62+ 08123343321
+            62+ 081238317788
           </div>
         </article>
       </div>
@@ -153,15 +164,29 @@
 
       <div class="d-flex justify-content-between mt-3">
         <span>Copyright &#169; 2024 Hkaar. All rights reserved</span>
-
-        <article class="d-flex">
-          <a href="#" class="me-2">Terms of service</a>
-
-          <a href="#">Privacy policy</a>
-        </article>
       </div>
     </div>
   </footer>
+
+  <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Order Online</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        
+        <div class="modal-body">
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/splidejs/4.1.0/js/splide.min.js" integrity="sha512-J0BNj3Jkel+lOk5NSuRgZT5ArOfSRV/1Q3tmbzC/C2lhWCp9KyqRnQkfuhIP0C3yMvXq4AKEnHmP4VuMK8PU4g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

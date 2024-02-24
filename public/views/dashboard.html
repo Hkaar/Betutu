@@ -12,7 +12,6 @@
   <link rel="stylesheet" href="/public/css/app.css">
 </head>
 <body>
-
   <main id="app" class="d-flex bg-dark text-light">
     <nav id="side-nav" data-collapsed="true">
       <div class="nav-items">
@@ -28,16 +27,6 @@
         <a href="#" class="nav-item active">
           <i class="fa-solid fa-house"></i>
           <span class="nav-item-title">Dashboard</span>
-        </a>
-        
-        <a href="#" class="nav-item">
-          <i class="fa-solid fa-list"></i>
-          <span class="nav-item-title">Orders</span>
-        </a>
-
-        <a href="#" class="nav-item">
-          <i class="fa-solid fa-boxes-stacked"></i>
-          <span class="nav-item-title">Inventory</span>
         </a>
 
         <a href="#" class="nav-item mt-auto">
@@ -58,174 +47,45 @@
         <div class="row">
           <div class="col-12 mb-3">
             <div id="dashboardBtns">
-              <button type="button" class="btn btn-light">
-                Create Link
+              <button type="button" class="btn btn-success">
+                Get Menu Link
               </button>
   
-              <button type="button" class="btn btn-danger">
+              <button type="button" class="btn btn-danger resetOrders">
                 Reset Orders
               </button>
             </div>
           </div>
 
           <div class="col-12 col-md-6">
-            <div class="widget bg-light text-dark rounded mb-3 p-1">
-              <h3>Stats</h3>
+            <div class="widget bg-light text-dark rounded mb-3 p-2">
+              <h3>Statistics</h3>
 
               <div class="stats">
                 <article class="d-flex stat">
                   <span class="me-1 title">Total orders : </span>
-                  <span id="orderCount">10</span>
-                </article>
-  
-                <article class="d-flex stat">
-                  <span class="me-1 title">Earnings : </span>
-                  <span id="orderCount">10</span>
-                </article>
-  
-                <article class="d-flex stat">
-                  <span class="me-1 title">Total stock : </span>
-                  <span id="orderCount">10</span>
-                </article>
-  
-                <article class="d-flex stat">
-                  <span class="me-1 title">Number of types : </span>
-                  <span id="orderCount">10</span>
+                  <span id="orderCount">0</span>
                 </article>
               </div>
             </div>
 
-            <div class="widget bg-light text-dark rounded mb-3 p-1">
-              <h3>Items</h3>
+            <div class="widget bg-light text-dark rounded mb-3 p-2">
+              <div class="d-flex justify-content-between mb-2">
+                <h3>Items</h3>
+
+                <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#addItem">+Add</button>
+              </div>
 
               <div class="items d-flex flex-column">
-                <article class="item">
-                  <span>Ayam Geprek</span>
-                  <span>Rp. 12.000</span>
-
-                  <div class="d-flex flex-column flex-sm-row">
-                    <button type="button" class="btn btn-dark">
-                      <i class="fa-solid fa-trash"></i>
-                    </button>
-
-                    <button type="button" class="btn btn-dark">
-                      <i class="fa-solid fa-edit"></i>
-                    </button>
-                  </div>
-                </article>
-
-                <article class="item">
-                  <span>Ayam Geprek</span>
-                  <span>Rp. 12.000</span>
-
-                  <div class="d-flex flex-column flex-sm-row">
-                    <button type="button" class="btn btn-dark">
-                      <i class="fa-solid fa-trash"></i>
-                    </button>
-
-                    <button type="button" class="btn btn-dark">
-                      <i class="fa-solid fa-edit"></i>
-                    </button>
-                  </div>
-                </article>
-
-                <article class="item">
-                  <span>Ayam Geprek</span>
-                  <span>Rp. 12.000</span>
-
-                  <div class="d-flex flex-column flex-sm-row">
-                    <button type="button" class="btn btn-dark">
-                      <i class="fa-solid fa-trash"></i>
-                    </button>
-
-                    <button type="button" class="btn btn-dark">
-                      <i class="fa-solid fa-edit"></i>
-                    </button>
-                  </div>
-                </article>
               </div>
             </div>
           </div>
 
           <div class="col-12 col-md-6">
-            <div class="widget bg-light text-dark rounded p-1">
+            <div class="widget bg-light text-dark rounded p-2">
               <h3>Orders</h3>
 
               <div class="orders d-flex flex-column">
-                <article class="order">
-                  <span class="order-token">
-                    bd333fdf2
-                  </span>
-
-                  <div class="order-items">
-                    <article class="order-item">
-                      <span>Ayam Geprek</span>
-                      <span>Rp. 12.000</span>
-                    </article>
-
-                    <article class="order-item">
-                      <span>Ayam Geprek</span>
-                      <span>Rp. 12.000</span>
-                    </article>
-
-                    <article class="order-item">
-                      <span>Ayam Geprek</span>
-                      <span>Rp. 12.000</span>
-                    </article>
-                  </div>
-
-                  <span class="total-price">Rp. 100.000</span>
-                </article>
-
-                <article class="order">
-                  <span class="order-token">
-                    bd333fdf2
-                  </span>
-
-                  <div class="order-items">
-                    <article class="order-item">
-                      <span>Ayam Geprek</span>
-                      <span>Rp. 12.000</span>
-                    </article>
-
-                    <article class="order-item">
-                      <span>Ayam Geprek</span>
-                      <span>Rp. 12.000</span>
-                    </article>
-
-                    <article class="order-item">
-                      <span>Ayam Geprek</span>
-                      <span>Rp. 12.000</span>
-                    </article>
-                  </div>
-
-                  <span class="total-price">Rp. 100.000</span>
-                </article>
-
-                <article class="order">
-                  <span class="order-token">
-                    bd333fdf2
-                  </span>
-
-                  <div class="order-items">
-                    <article class="order-item">
-                      <span>Ayam Geprek</span>
-                      <span>Rp. 12.000</span>
-                    </article>
-
-                    <article class="order-item">
-                      <span>Ayam Geprek</span>
-                      <span>Rp. 12.000</span>
-                    </article>
-
-                    <article class="order-item">
-                      <span>Ayam Geprek</span>
-                      <span>Rp. 12.000</span>
-                    </article>
-                  </div>
-
-                  <span class="total-price">Rp. 100.000</span>
-                </article>
               </div>
             </div>
           </div>
@@ -233,10 +93,51 @@
       </div>
     </section>
   </main>
+
+  <div class="modal fade" id="addItem" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Menu Item</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addItemForm">
+            <div class="mb-3">
+              <label for="img" class="form-label">Image</label>
+              <input type="file" class="form-control" id="img" name="img">
+            </div>
+
+            <div class="mb-3">
+              <label for="name" class="form-label" name="name">Item Name</label>
+              <input type="text" class="form-control" id="name" name="name" aria-describedby="emailHelp">
+            </div>
+            
+            <div class="mb-3">
+              <label for="price" class="form-label" name="price">Price</label>
+              <input type="number" class="form-control" name="price" id="price">
+            </div>
+
+            <div class="mb-3">
+              <label for="desc" class="form-label" name="desc">Description</label>
+              <textarea name="desc" id="desc" class="form-control"></textarea>
+            </div>
+
+            <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modifyItem" tabindex="-1" aria-hidden="true">
+  </div>
   
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/splidejs/4.1.0/js/splide.min.js" integrity="sha512-J0BNj3Jkel+lOk5NSuRgZT5ArOfSRV/1Q3tmbzC/C2lhWCp9KyqRnQkfuhIP0C3yMvXq4AKEnHmP4VuMK8PU4g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.7/axios.min.js" integrity="sha512-NQfB/bDaB8kaSXF8E77JjhHG5PM6XVRxvHzkZiwl3ddWCEPBa23T76MuWSwAJdMGJnmQqM0VeY9kFszsrBEFrQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <script src="/public/js/app.js"></script>
 </body>

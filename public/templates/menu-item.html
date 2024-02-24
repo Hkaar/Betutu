@@ -1,0 +1,39 @@
+<div class="modal-dialog modal-lg modal-fullscreen-sm-down">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h1 class="modal-title fs-5" id="itemWinTitle">{{title}}</h1>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-12 col-lg-6">
+          <img src="/{{img}}" alt="" class="img-fluid">
+        </div>
+
+        <div class="col-12 col-lg-6 mt-3">
+          <h3 class="mb-3">{{title}}</h3>
+          <h6 class="mb-3">Rp. {{price}}</h6>
+
+          <form action="/order/add" method="post" id="itemForm">
+            <div class="mb-3">
+              <input type="hidden" name="item" id="item" value="{{title.lower()}}">
+
+              <label for="amount" class="form-label">Amount</label>
+              <input type="number" placeholder="Enter the amount here" class="form-control" name="amount" id="amount">
+            </div>
+
+            <p class="mb-3">
+              {{desc}}
+            </p>
+            
+            <div class="d-flex justify-content-end">
+              <button type="button" class="btn btn-danger me-1" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-success">Add to cart</button>
+            </div>
+          </form>
+        </div>
+      </div>  
+    </div>
+  </div>
+</div>

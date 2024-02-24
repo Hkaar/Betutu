@@ -1,0 +1,58 @@
+{% for order in orders %}
+  <article class="order">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <span>{{order["token"]}}</span>
+
+      <div class="d-flex">
+        <button type="button" class="btn btn-dark deleteOrder" data-token="{{order['token']}}">
+          <i class="fa-solid fa-trash" data-token="{{order['token']}}"></i>
+        </button>
+
+        {% if orders["status"] != "completed"%}
+          <button type="button" class="btn btn-dark markOrder" data-token="{{order['token']}}">
+            <i class="fa-solid fa-check" data-token="{{order['token']}}"></i>
+          </button>
+        {% else %}
+          <button type="disabled" class="btn btn-secondary">
+            <i class="fa-solid fa-check"></i>
+          </button>
+        {% endif %}
+      </div>
+    </div>
+
+    <table class="table table-striped rounded">
+      <thead>
+        <th scope="col">Item</th>
+        <th scope="col">Amount</th>
+        <th scope="col">Total</th>
+        <th scope="col" width="5%">Edit</th>
+      </thead>
+
+      <tbody>
+        {% for item in order["items"] %}
+          <tr>
+            <td>{{item["name"]}}</td>
+            <td>{{item["amount"]}}</td>
+            <td>RP. {{item["total"]}}</td>
+            <td>
+              <button type="button" class="btn delOrderItem" data-item="{{item['id']}}">
+                <i class="fa-solid fa-trash" data-item="{{item['id']}}"></i>
+              </button>
+            </td>
+          </tr>
+        {% endfor %}
+
+        <tr>
+          <td>Total Price</td>
+          <td>{{order["total_amount"]}}</td>
+          <td colspan="2">RP. {{order["total_price"]}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between">
+      <span>Created at : {{order["date"]}}</span>
+      <span>Status: {{order["status"]}}</span>
+    </div>
+  </article>
+{% endfor %}

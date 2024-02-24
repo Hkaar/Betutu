@@ -1,0 +1,26 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h1 class="modal-title fs-5" id="exampleModalLabel">Modify Menu Item</h1>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <form id="modifyItemForm">
+        <input type="hidden" name="old_name" value="{{item}}">
+        
+        <div class="mb-3">
+          <label for="name" class="form-label" name="name">New Name</label>
+          <input type="text" class="form-control" id="name" name="name" aria-describedby="emailHelp">
+        </div>
+        
+        <div class="mb-3">
+          <label for="price" class="form-label" name="price">New Price</label>
+          <input type="number" class="form-control" name="price" id="price">
+        </div>
+
+        <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </form>
+    </div>
+  </div>
+</div>
